@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>انبارداری نازک‌کار</title>
+<style>
+:root{--navy:#14283a;--gold:#b88736;--paper:#f5f3ee;--card:#fff;--ink:#1d2c38;--muted:#687681;--line:#e1ddd3}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Tahoma,Arial,sans-serif;line-height:1.8}
+header{background:linear-gradient(130deg,#102131,#29465a);color:#fff;padding:20px 16px 25px;border-bottom:4px solid var(--gold)}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;border:1px solid #e1bf7c;border-radius:13px;display:grid;place-items:center;color:#f0ce88;font-size:26px;font-weight:bold}
+h1{font-size:20px;margin:0}header p{margin:2px 0 0;color:#d5dfe5;font-size:12px}
+main{max-width:900px;margin:auto;padding:14px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:14px}
+.stat,.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px;box-shadow:0 4px 14px #12283a08}
+.stat strong{display:block;color:var(--gold);font-size:21px}.stat span{font-size:11px;color:var(--muted)}
+h2{font-size:16px;margin:0 0 10px;color:var(--navy)}.tabs{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 12px}
+button{font-family:inherit;border:0;border-radius:9px;padding:10px 13px;font-weight:bold;cursor:pointer;background:var(--navy);color:#fff}
+button.alt{background:#eee7d9;color:var(--navy)}button.danger{background:#8c3434}.tabs button{flex:1;min-width:100px}
+label{display:block;font-size:12px;color:var(--muted);margin:7px 0 3px}
+input,select{width:100%;padding:11px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink);font:inherit;font-size:14px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.wide{grid-column:1/-1}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.searchrow{display:flex;gap:8px}.searchrow input{flex:1;min-width:0}
+.item{border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:9px;background:#fff}
+.itemtop{display:flex;justify-content:space-between;gap:8px;align-items:start}.item h3{font-size:15px;margin:0}.code{font-size:12px;color:var(--gold);font-weight:bold}
+.meta{display:flex;gap:7px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:5px}.pill{background:#f4eddf;border-radius:6px;padding:2px 7px;color:#65481e}
+.empty{text-align:center;padding:24px;color:var(--muted)}.hidden{display:none!important}.note{font-size:11px;color:var(--muted);margin-top:9px}
+@media(max-width:520px){.grid{grid-template-columns:1fr}.wide{grid-column:auto}.stats{gap:6px}.stat{padding:10px}.stat strong{font-size:18px}.searchrow{flex-direction:column}}
+</style></head>
+<body>
+<header><div class="brand"><div class="logo">ن</div><div><h1>انبارداری نازک‌کار</h1><p>مدیریت کالا • کدینگ • جانمایی قفسه‌ها</p></div></div></header>
+<main>
+<div class="stats"><div class="stat"><strong id="totalItems">۰</strong><span>قلم کالا</span></div><div class="stat"><strong id="totalQty">۰</strong><span>مجموع موجودی</span></div><div class="stat"><strong id="lowItems">۰</strong><span>اقلام با موجودی صفر</span></div></div>
+<div class="tabs"><button onclick="showTab('search')">جستجوی کالا</button><button class="alt" onclick="showTab('add')">ثبت کالای جدید</button><button class="alt" onclick="showTab('backup')">پشتیبان‌گیری</button></div>
+<section id="searchPanel" class="panel"><h2>جستجو در کالاها</h2><div class="searchrow"><input id="q" placeholder="کد کالا، نام یا محل نگهداری..." oninput="renderItems()"><button onclick="renderItems()">جستجو</button></div><div id="items"></div><p class="note">اطلاعات روی همین دستگاه ذخیره می‌شود. برای جلوگیری از ازدست‌رفتن اطلاعات، مرتب فایل پشتیبان بگیر.</p></section>
+<section id="addPanel" class="panel hidden"><h2 id="formTitle">ثبت کالای جدید</h2><form id="itemForm"><input id="editId" type="hidden"><div class="grid">
+<div><label>کد کالا *</label><input id="code" required placeholder="مثلاً 10025"></div>
+<div><label>نام کالا *</label><input id="name" required placeholder="نام دقیق کالا"></div>
+<div><label>موجودی</label><input id="qty" type="number" min="0" value="0" required></div>
+<div><label>حداقل موجودی</label><input id="minQty" type="number" min="0" value="0"></div>
+<div><label>ستون</label><select id="col"></select></div>
+<div><label>سمت</label><select id="side"><option value="L">چپ (L)</option><option value="R">راست (R)</option></select></div>
+<div><label>ردیف / طبقه</label><input id="row" placeholder="مثلاً ۱"></div>
+<div><label>قفسه (اختیاری)</label><select id="rack"><option value="">بدون قفسه</option><option>قفسه ۱</option><option>قفسه ۲</option></select></div>
+<div class="wide"><label>توضیحات</label><input id="notes" placeholder="برند، مدل یا توضیح تکمیلی"></div></div>
+<div class="actions"><button type="submit">ذخیره کالا</button><button class="alt" type="button" onclick="resetForm();showTab('search')">انصراف</button></div></form></section>
+<section id="backupPanel" class="panel hidden"><h2>پشتیبان‌گیری و بازیابی</h2><p>برای ذخیره فهرست کالاها در فایل، پشتیبان بگیر. فایل را در جای امن نگه دار.</p><div class="actions"><button onclick="exportData()">دریافت فایل پشتیبان</button><label class="alt" style="padding:10px 13px;border-radius:9px"><input type="file" id="importFile" accept=".json,application/json" style="display:none" onchange="importData(event)">بازیابی از فایل</label><button class="danger" onclick="clearAll()">حذف همه کالاها</button></div><p class="note">حذف همه کالاها قابل بازگشت نیست؛ قبل از آن حتماً پشتیبان بگیر.</p></section>
+</main>
+<script>
+const fa=n=>Number(n||0).toLocaleString('fa-IR');
+const cols=document.getElementById('col');'ABCDEFGHIJK'.split('').forEach(c=>{let o=document.createElement('option');o.value=c;o.textContent='ستون '+c;cols.appendChild(o)});
+let data=[];try{data=JSON.parse(localStorage.getItem('nazokkar_inventory')||'[]')}catch(e){data=[]}
+function save(){localStorage.setItem('nazokkar_inventory',JSON.stringify(data));updateStats();renderItems()}
+function loc(x){return (x.col||'A')+(x.side||'L')+(x.row?'-'+x.row:'')+(x.rack?' • '+x.rack:'')}
+function updateStats(){document.getElementById('totalItems').textContent=fa(data.length);document.getElementById('totalQty').textContent=fa(data.reduce((s,x)=>s+Number(x.qty||0),0));document.getElementById('lowItems').textContent=fa(data.filter(x=>Number(x.qty||0)===0).length)}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function renderItems(){let q=(document.getElementById('q').value||'').trim().toLowerCase();let arr=data.filter(x=>[x.code,x.name,loc(x),x.notes].join(' ').toLowerCase().includes(q));let root=document.getElementById('items');if(!arr.length){root.innerHTML='<div class="empty">'+(data.length?'موردی پیدا نشد.':'هنوز کالایی ثبت نشده است؛ از بخش ثبت کالای جدید شروع کن.')+'</div>';return}root.innerHTML=arr.map(x=>'<article class="item"><div class="itemtop"><div><h3>'+esc(x.name)+'</h3><div class="code">کد: '+esc(x.code)+'</div></div><span class="pill">'+(Number(x.qty)===0?'موجودی صفر':'موجودی: '+fa(x.qty))+'</span></div><div class="meta"><span>محل: '+esc(loc(x))+'</span><span>حداقل: '+fa(x.minQty)+'</span>'+(x.notes?'<span>'+esc(x.notes)+'</span>':'')+'</div><div class="actions"><button class="alt" onclick="editItem('+x.id+')">ویرایش</button><button class="danger" onclick="deleteItem('+x.id+')">حذف</button></div></article>').join('')}
+function showTab(t){['search','add','backup'].forEach(x=>{document.getElementById(x+'Panel').classList.toggle('hidden',x!==t)});document.querySelectorAll('.tabs button').forEach((b,i)=>{b.classList.toggle('alt',(['search','add','backup'][i]!==t))});if(t==='search')renderItems()}
+function resetForm(){document.getElementById('itemForm').reset();document.getElementById('editId').value='';document.getElementById('qty').value=0;document.getElementById('minQty').value=0;document.getElementById('formTitle').textContent='ثبت کالای جدید'}
+document.getElementById('itemForm').addEventListener('submit',e=>{e.preventDefault();let id=Number(document.getElementById('editId').value);let item={id:id||Date.now(),code:document.getElementById('code').value.trim(),name:document.getElementById('name').value.trim(),qty:Number(document.getElementById('qty').value),minQty:Number(document.getElementById('minQty').value||0),col:document.getElementById('col').value,side:document.getElementById('side').value,row:document.getElementById('row').value.trim(),rack:document.getElementById('rack').value,notes:document.getElementById('notes').value.trim()};if(!item.code||!item.name)return alert('کد و نام کالا الزامی است.');if(data.some(x=>x.code.toLowerCase()===item.code.toLowerCase()&&x.id!==item.id))return alert('این کد کالا قبلاً ثبت شده است.');if(id)data=data.map(x=>x.id===id?item:x);else data.unshift(item);save();resetForm();showTab('search')});
+function editItem(id){let x=data.find(a=>a.id===id);if(!x)return;showTab('add');document.getElementById('formTitle').textContent='ویرایش کالا';['code','name','qty','minQty','col','side','row','rack','notes'].forEach(k=>document.getElementById(k).value=x[k]??'');document.getElementById('editId').value=x.id}
+function deleteItem(id){let x=data.find(a=>a.id===id);if(x&&confirm('کالای «'+x.name+'» حذف شود؟')){data=data.filter(a=>a.id!==id);save()}}
+function exportData(){let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='nazokkar-inventory-backup.json';a.click();URL.revokeObjectURL(a.href)}
+function importData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!Array.isArray(x))throw 0;if(confirm('اطلاعات فعلی با فایل جایگزین شود؟')){data=x;save();alert('بازیابی انجام شد.')}}catch(err){alert('فایل پشتیبان معتبر نیست.')}e.target.value=''};r.readAsText(f)}
+function clearAll(){if(confirm('همه کالاها حذف شوند؟')&&confirm('برای تأیید نهایی، این کار قابل بازگشت نیست. ادامه می‌دهی؟')){data=[];save()}}
+updateStats();renderItems();
+</script></body></html>
