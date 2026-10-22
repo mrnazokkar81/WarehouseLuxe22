@@ -68,3 +68,4 @@ footer{background:#091d18;border-top:1px solid #345247}.float-call{border-radius
 </div><script>
 document.getElementById('requestForm').addEventListener('submit',function(e){e.preventDefault();const f=new FormData(e.currentTarget);const subject='درخواست مشاوره انبارداری - '+(f.get('company')||f.get('name'));const body='نام: '+f.get('name')+'\nمجموعه: '+(f.get('company')||'ذکر نشده')+'\nنوع انبار: '+f.get('kind')+'\nخدمت موردنیاز: '+f.get('need')+'\nتوضیحات: '+(f.get('details')||'ذکر نشده');document.getElementById('formStatus').textContent='در حال آماده‌سازی ایمیل…';window.location.href='mailto:mr.nazokkar81@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);});
 </script></body></html>
+<!-- Cloudflare redeploy trigger: 2026-10-22 -->
