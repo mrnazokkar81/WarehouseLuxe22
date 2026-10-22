@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mrnazokkar81.github.io/WarehouseLuxe22/sitemap.xml
