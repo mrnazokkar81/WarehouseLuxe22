@@ -1,0 +1,7 @@
+name = "warehouseluxe22"
+compatibility_date = "2026-10-22"
+
+[assets]
+directory = "."
+not_found_handling = "single-page-application"
+asset_upload_exclude = [".github/**", "android-app/**", ".git/**"]
